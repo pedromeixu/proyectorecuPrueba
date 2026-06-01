@@ -115,75 +115,176 @@
 
 </script>
 <template>
-    <form @submit.prevent="addOrUpdate">
-        <div>
-            <label>Nombre</label>
-            <input v-model="form.nombre" type="text">
+    <div class="tareas container py-4">
+        <h2 class="section_title mb-4">Gestión de proyectos</h2>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <h3 class="form-title mb-3"></h3>
+                <form @submit.prevent="addOrUpdate" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Nombre</label>
+                        <input v-model="form.nombre" type="text" class="form-control">
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Descripción</label>
+                        <textarea v-model="form.descripcion" rows="3" class="form-control"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Fecha Inicio</label>
+                        <input v-model="form.fechaInicio" type="date" class="form-control">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Prioridad</label>
+                        <select v-model="form.prioridad" class="form-select">
+                            <option value="alta">Alta</option>
+                            <option value="media">Media</option>
+                            <option value="baja">Baja</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">ID empleado</label>
+                        <input v-model="form.empleadoId" type="text" class="form-control">
+                    </div>
+
+                    <div class="col-12 d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary-corp">Guardar</button>
+                        <button type="button" @click="resetForm" class="btn btn-outline-secondary">Limpiar</button>
+                    </div>
+                </form>
+            </div>
         </div>
+        <h2 class="mt-4 mb-3">Listado de proyectos</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle proyectos-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Fecha Inicio</th>
+                        <th>Prioridad</th>
+                        <th>Empleado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
 
-        <div>
-            <label>Descripción</label>
-            <textarea v-model="form.descripcion" rows="3"></textarea>
+                <tbody>
+                    <tr v-for="p in proyectos" :key="p.id">
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.descripcion }}</td>
+                        <td>{{ p.fechaInicio }}</td>
+                        <td><span
+                                class="badge prioridad"
+                                :class="{
+                                    'prioridad-alta': p.prioridad === 'alta',
+                                    'prioridad-media': p.prioridad === 'media',
+                                    'prioridad-baja': p.prioridad === 'baja'
+                                }"
+                            >{{ p.prioridad }}</span></td>
+                        <td>
+                            {{
+                                empleados.find(e => e.id === p.empleadoId).nombre
+                            }}
+                        </td>
+
+                        <td>
+                            <button class="btn btn-sm btn-warning" @click="selProyecto(p)">Editar</button>
+                            <button class="btn btn-sm btn-danger" @click="delProyecto(p.id)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-        <div>
-            <label>Fecha Inicio</label>
-            <input v-model="form.fechaInicio" type="date">
-        </div>
-
-        <div>
-            <label>Prioridad</label>
-            <select v-model="form.prioridad">
-                <option value="alta">Alta</option>
-                <option value="media">Media</option>
-                <option value="baja">Baja</option>
-            </select>
-        </div>
-
-        <div>
-            <label>ID empleado</label>
-            <input v-model="form.empleadoId" type="text">
-        </div>
-
-        <div>
-            <button type="submit">Guardar</button>
-            <button type="button" @click="resetForm">Limpiar</button>
-        </div>
-    </form>
-
-    <h2>Listado de proyectos</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Fecha Inicio</th>
-                <th>Prioridad</th>
-                <th>Empleado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr v-for="p in proyectos" :key="p.id">
-                <td>{{ p.id }}</td>
-                <td>{{ p.nombre }}</td>
-                <td>{{ p.descripcion }}</td>
-                <td>{{ p.fechaInicio }}</td>
-                <td>{{ p.prioridad }}</td>
-                <td>
-                    {{
-                        empleados.find(e => e.id === p.empleadoId).nombre
-                    }}
-                </td>
-
-                <td>
-                    <button @click="selProyecto(p)">Editar</button>
-                    <button @click="delProyecto(p.id)">Eliminar</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
 </template>
+
+<style scoped>
+    /* TÍTULOS */
+    .section-title {
+        color: #0a3d62;
+        font-weight: 700;
+    }
+
+    .form-title {
+        color: #0a3d62;
+        font-weight: 600;
+    }
+
+    /* BOTÓN AZUL CLARO CORPORATIVO */
+    .btn-primary-corp {
+        background-color: #4da3ff;
+        border-color: #4da3ff;
+        font-weight: 600;
+        color: white;
+        transition: 0.2s ease;
+    }
+
+    .btn-primary-corp:hover {
+        background-color: #1e90ff;
+        border-color: #1e90ff;
+    }
+
+    /* TABLA */
+    
+    /* TABLA GENERAL */
+    .proyectos-table {
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+    }
+
+    /* FILAS */
+    .proyectos-table tbody tr:hover {
+        background-color: #f1f7ff;
+        transition: 0.2s ease;
+    }
+
+    /* BADGES DE PRIORIDAD */
+    .prioridad {
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        text-transform: capitalize;
+        font-size: 0.85rem;
+    }
+
+    .prioridad-alta {
+        background-color: #ff6b6b;
+        color: white;
+    }
+
+    .prioridad-media {
+        background-color: #feca57;
+        color: #5a3e00;
+    }
+
+    .prioridad-baja {
+        background-color: #1dd1a1;
+        color: white;
+    }
+
+    /* BOTONES DE ACCIÓN */
+    .btn-warning {
+        font-weight: 600;
+    }
+
+    .btn-danger {
+        font-weight: 600;
+    }
+
+    /* RESPONSIVE EXTRA */
+    @media (max-width: 768px) {
+        .proyectos-table td,
+        .proyectos-table th {
+            font-size: 0.85rem;
+            padding: 6px;
+        }
+    }
+
+</style>

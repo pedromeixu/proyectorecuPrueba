@@ -1,0 +1,83 @@
+{
+  "empleados": [
+    {
+      "nombre": "José",
+      "email": "jose@gmail.com",
+      "movil": "444444444",
+      "puesto": "rrhh",
+      "id": "iyyrIc9zCyY"
+    },
+    {
+      "nombre": "María",
+      "email": "maria@gmail.com",
+      "movil": "333333333",
+      "puesto": "rrhh",
+      "id": "nno8I8PcJdc"
+    }
+  ],
+  "tareas": [
+    {
+      "titulo": "planificar proyecto",
+      "descripcion": "planificar proyectos pendientes",
+      "estado": "pendiente",
+      "prioridad": "baja",
+      "empleadoId": "iyyrIc9zCyY",
+      "id": "jXOnIkSUSik"
+    },
+    {
+      "titulo": "atender problemas rrhh",
+      "descripcion": "resolver los problemas de recursos",
+      "estado": "en_proceso",
+      "prioridad": "alta",
+      "empleadoId": "iyyrIc9zCyY",
+      "id": "x6U49xheUoA"
+    },
+    {
+      "titulo": "problema en sala de máquinas",
+      "descripcion": "solucionar errores de ordenadores",
+      "estado": "pendiente",
+      "prioridad": "alta",
+      "empleadoId": "nno8I8PcJdc",
+      "id": "j8sZtwfSu6Y"
+    },
+    {
+      "titulo": "contable",
+      "descripcion": "contratar a un contable",
+      "estado": "finalizada",
+      "prioridad": "media",
+      "empleadoId": "nno8I8PcJdc",
+      "id": "TnTmXcNTlBQ"
+    },
+    {
+      "titulo": "prueba Stripe",
+      "descripcion": "afwwafwafwa",
+      "estado": "finalizada",
+      "prioridad": "alta",
+      "empleadoId": "nno8I8PcJdc",
+      "horas": 2,
+      "precioHora": 7,
+      "total": 14,
+      "id": "wnmjtWK1wPU"
+    }
+  ],
+  "facturas": [
+    {
+      "id": "ErMfKcLFUm8",
+      "codigo": "F-2026-002",
+      "clienteId": "nno8I8PcJdc",
+      "fecha": "2026-05-26",
+      "tareas": [
+        {
+          "id": "wnmjtWK1wPU",
+          "titulo": "prueba Stripe",
+          "horas": 2,
+          "precioHora": 7,
+          "total": 14
+        }
+      ],
+      "totalFactura": 14
+    }
+  ],
+  "proyectos": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}

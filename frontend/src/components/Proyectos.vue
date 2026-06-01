@@ -8,6 +8,8 @@
         getProyectoById
     } from "../api/apiProyectos";
     import { getEmpleados } from "../api/apiEmpleados";
+    import jsPDF from "jspdf";
+    import autoTable from "jspdf-autotable";
     const proyectos = ref([]);
     const empleados = ref([]);
     const form = reactive({
@@ -113,6 +115,39 @@
         form._empleadoValido = null;
     }
 
+    function obtenerNombreEmpleado(id) {
+        const emp = empleados.value.find(e => e.id === id);
+        return emp.nombre;
+    }
+
+    function generarPDF(titulo, columnas, filas) {
+        const doc = new jsPDF();
+
+        doc.setFontSize(16);
+        doc.text(titulo, 14, 15);
+
+        autoTable(doc, {
+            startY: 25,
+            head: [columnas],
+            body: filas
+        });
+
+        doc.save(`${titulo}.pdf`);
+    }
+
+    function pdfProyectos() {
+        const columnas = ["ID", "Nombre", "Descripción", "Fecha Inicio", "Prioridad", "Nombre Empleado"];
+        const filas = proyectos.value.map(p => [p.id, p.nombre, p.descripcion, p.fechaInicio, p.prioridad, obtenerNombreEmpleado(p.empleadoId)]);
+
+        generarPDF("Lista de Proyectos", columnas, filas);
+    }
+
+    function pdfProyectosEmpleado() {
+        const columnas = ["ID", "Nombre", "Descripción", "Fecha Inicio", "Prioridad", "Nombre Empleado"];
+        const filas = [p.id, p.nombre, p.descripcion, p.fechaInicio, p.prioridad, obtenerNombreEmpleado(p.empleadoId)]
+
+        generarPDF(columnas, filas);
+    }
 </script>
 <template>
     <div class="tareas container py-4">
@@ -120,7 +155,7 @@
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-body">
 
-                <h3 class="form-title mb-3"></h3>
+                <h3 class="form-title mb-3">Nuevo Proyecto</h3>
                 <form @submit.prevent="addOrUpdate" class="row g-3">
                     <div class="col-12">
                         <label class="form-label fw-semibold">Nombre</label>
@@ -158,7 +193,14 @@
                 </form>
             </div>
         </div>
-        <h2 class="mt-4 mb-3">Listado de proyectos</h2>
+        <h3 class="mt-4 mb-3">Listado de proyectos</h3>
+
+        <div class="">
+            <button @click="pdfProyectos">
+                Exportar proyectos
+            </button>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle proyectos-table">
                 <thead class="table-light">
@@ -231,7 +273,7 @@
     }
 
     /* TABLA */
-    
+
     /* TABLA GENERAL */
     .proyectos-table {
         border-radius: 8px;

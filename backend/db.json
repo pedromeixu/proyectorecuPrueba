@@ -86,6 +86,14 @@
       "prioridad": "alta",
       "empleadoId": "iyyrIc9zCyY",
       "id": "35d53c42-3d71-49b8-97ba-3078f5db8281"
+    },
+    {
+      "nombre": "proyecto2",
+      "descripcion": "aaa",
+      "fechaInicio": "2026-06-05",
+      "prioridad": "baja",
+      "empleadoId": "nno8I8PcJdc",
+      "id": "e6a21c39-9537-4a7f-8411-4694b5e1256b"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

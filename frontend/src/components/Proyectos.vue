@@ -142,12 +142,16 @@
         generarPDF("Lista de Proyectos", columnas, filas);
     }
 
-    function pdfProyectosEmpleado() {
+    function pdfProyectosEmpleado(id, nombre, descripcion, fechaInicio, prioridad, empleadoId) {
         const columnas = ["ID", "Nombre", "Descripción", "Fecha Inicio", "Prioridad", "Nombre Empleado"];
-        const filas = [p.id, p.nombre, p.descripcion, p.fechaInicio, p.prioridad, obtenerNombreEmpleado(p.empleadoId)]
 
-        generarPDF(columnas, filas);
+        const nombreEmpleado = obtenerNombreEmpleado(empleadoId);
+
+        const filas = [[id, nombre, descripcion, fechaInicio, prioridad, nombreEmpleado]];
+
+        generarPDF("Proyecto del empleado " + nombreEmpleado, columnas, filas);
     }
+
 </script>
 <template>
     <div class="tareas container py-4">
@@ -196,7 +200,7 @@
         <h3 class="mt-4 mb-3">Listado de proyectos</h3>
 
         <div class="">
-            <button @click="pdfProyectos">
+            <button class="btn-corp" @click="pdfProyectos">
                 Exportar proyectos
             </button>
         </div>
@@ -236,8 +240,9 @@
                         </td>
 
                         <td>
-                            <button class="btn btn-sm btn-warning" @click="selProyecto(p)">Editar</button>
-                            <button class="btn btn-sm btn-danger" @click="delProyecto(p.id)">Eliminar</button>
+                            <button class="btn-edit btn-sm" @click="selProyecto(p)">Editar</button>
+                            <button class="btn-delete btn-sm" @click="delProyecto(p.id)">Eliminar</button>
+                            <button class="btn-print btn-sm" @click="pdfProyectosEmpleado(p.id, p.nombre, p.descripcion, p.fechaInicio, p.prioridad, p.empleadoId)">Imprimir</button>
                         </td>
                     </tr>
                 </tbody>
@@ -320,6 +325,65 @@
         font-weight: 600;
     }
 
+    .btn-corp {
+        background: linear-gradient(135deg, #4da3ff, #1e90ff);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: 0.2s ease;
+    }
+
+    .btn-corp:hover {
+        background: linear-gradient(135deg, #1e90ff, #006edc);
+    }
+
+    .btn-corp:active {
+        transform: translateY(0);
+    }
+
+    .btn-edit {
+        background-color: #feca57;
+        border: none;
+        color: #5a3e00;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: 0.2s ease;
+    }
+
+    .btn-edit:hover {
+        background-color: #ffb142;
+    }
+
+    .btn-delete {
+        background-color: #ff6b6b;
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: 0.2s ease;
+    }
+
+    .btn-delete:hover {
+        background-color: #ee5253;
+    }
+
+    .btn-print {
+        background-color: #ced6e0;
+        border: none;
+        color: #2f3542;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: 0.2s ease;
+    }
+
+    .btn-print:hover {
+        background-color: #a4b0be;
+    }
     /* RESPONSIVE EXTRA */
     @media (max-width: 768px) {
         .proyectos-table td,
